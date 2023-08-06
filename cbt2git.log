@@ -1,0 +1,9 @@
+2023-08-06 02:35:15.557449 - Initialized conversion of CBT266
+2023-08-06 02:35:15.617658 - Received CBT.V505.FILE266.PDS from FILE266.XMI 
+2023-08-06 02:35:15.619860 - Found $$$#DATE.txt (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/$$$#DATE
+2023-08-06 02:35:15.621017 - Found $$NOTE01.txt (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/$$NOTE01
+2023-08-06 02:35:15.621961 - Found $$NOTE02.txt (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/$$NOTE02
+2023-08-06 02:35:15.622883 - Found @FILE266.txt (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/@FILE266
+2023-08-06 02:35:15.623872 - Found SS0104.txt (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/SS0104
+2023-08-06 02:35:15.624678 - Found SS0104$.jcl (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/SS0104$
+2023-08-06 02:35:15.625616 - Found SS0104J1.jcl (text/plain) in CBT.V505.FILE266.PDS, moved to PDS/SS0104J1
