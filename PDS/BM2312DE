@@ -1,0 +1,143 @@
+    A LITTLE BIT ABOUT THESE TAPE MAPPING AND TAPE COPYING PROGRAMS
+
+CONCERNING TWO OLD PROGRAMS IN CBT FILE 266
+
+                                                  by Sam Golob
+
+INTRODUCTION
+
+      There aren't too many differences between "tape mapping programs"
+and "tape copying programs".  You run a tape mapping program, because
+you want to find out what is on a tape.  You run a tape copying program,
+to copy a tape, from end-to-end, onto another tape.
+
+      Such programs are very important to systems programmers.  Many
+times, a tape (unmarked or cryptically marked) is floating around in a
+data center, and you want to know what is on it.  If you mount it for a
+job, it may put unwanted stuff on your system.  It is therefore very
+necessary to see what is on the tape first, before risking anything on
+the system, if thw tape would have been "blindly mounted" without a
+predetermined purpose.
+
+      For systems programmers, copying a tape is just as important,
+because its data needs to be saved somewhere, to be used much later.
+
+      As I said, however, tape mapping programs, which show you what is
+ON a tape, are very closely related to tape copying programs, which COPY
+the contents of one tape onto another.  The reason for that, is because
+they both work the same way, using just about the same mechanisms.
+
+      How do they both work?  Each type of program reads one block of
+tape data at a time, into a data buffer (storage in the system).  Once
+the data is there in the buffer, you can do either of two things with
+it.  You can:
+
+1-  Analyze the data that is in the buffer.  Or:
+2-  Copy the data in the buffer to another tape.
+
+In fact, you can do both of these actions at the same time.  You can
+first analyze the data in the buffer, reporting on it, and then you can
+copy it out to another tape right afterwards.  Thus, some tape copying
+programs can also be used for tape mapping, and vice-versa.
+
+      Files on tape are separated from each other by special characters
+called "tape marks".  When copying a tape, when you hit a tape mark,
+which can also be called "a unit exception", you just write another tape
+mark to the output tape, and go on.  Then you repeat the operation and
+go through the entire tape until its end.  Usually a tape is ended, when
+you encounter two consecutive tape marks, but not always.  If you are
+smart, you will know when two consecutive tape marks end a tape, and
+when they don't.  And you will program accordingly.
+
+
+IBM'S "PROBLEM" WITH THESE TYPES OF PROGRAMS
+
+      It seems that IBM has never been "too keen" on supplying the world
+with either tape mapping or tape copying programs.  In the case of tape
+copying programs, it is easy to see why.  In the hands of a disgruntled
+application programmer, a tape copying program might be used to copy the
+company's proprietary data, and bring it to another company, without the
+first company being much the wiser.  I contend that IBM never wanted to
+be responsible for aiding and abetting such actions.  So therefore they
+did not write any tape copying utilities for distribution to
+programmers.
+
+      Nevertheless, such programs are easy to write, and we have at
+least 8 or 9 of them on the CBT Tape collection (www.cbttape.org).  I
+recently revived two such programs that were written 47 years ago, and
+they almost ran perfectly, right out of the box.  But they did have a
+few errors, both in concept and in practice.  Corrected versions of them
+two programs have now been distributed in the CBT Tape collection, on
+File 266.  They are from Florida Power, in Miami.  And they are called
+SS0104 (alias MAPTAPE) and SS0278 (alias DUPTAPE).  The SYSPRINT reports
+from both of them are nearly identical to each other, and they do a
+pretty good job of showing you what is on each tape (original or
+copied).
+
+      At the time these programs were written (in the mid '70s), they
+were "pioneering works", because as we surmised before, IBM didn't want
+to have to do with such programs, and they didn't supply us with
+programs like them.  So the authors stumbled and bumbled a bit, trying
+to figure out what features to include in these "new works".  I'll
+illustrate what I mean in a moment.
+
+      For example, nowadays, a tape copying program makes "mirror
+images" of the original tape, not altering the tape labels at all, with
+possibly an exception to alter the VOLUME label, to just change the
+volume id of the tape, and nothing else on it.  But in 1976, these
+authors were quite conscious of trying to make the tape appear as a
+"copy" rather than to look like the original tape.  So they mucked with
+the HDR2 and EOF2 labels in the copied tape, altering them to make clear
+that the tape was a copy, and not the original.
+
+      I didn't think that a modern shop who wanted to use these programs
+to copy and map tapes, would want to alter their labels.  So I prepared
+two versions of the COPY program (SS0278).  The latest version would
+leave the labels unaltered, whereas the "older version" (SS0278O) would
+muck with the labels to make the tape look like a copy, as before.  So
+you can now do what you want.  Take your choice.
+
+
+WHAT ARE THE "ENGINES" THAT COPY THE TAPES?
+
+      Back in the day, when tapes weren't very long, and computer
+storage wasn't abundant, and you didn't have 3590 tapes with "gigundo"
+length, or virtual tapes that were "miles long", it was OK to limit the
+length of a measured tape to less than 10000 feet.  Also, DCB block
+sizes for tapes were usually limited to 32768 bytes (32K) or less.  Now,
+we have "large block interface" tapes with 256K blocksizes or more, and
+some tapes are very long.  Our measuring and copying tools therefore
+have to grow, in order to accommodate.
+
+      There are two basic "engines" or I/O (input/output) mechanisms
+which are used to drive a tape copying operation.  They are called BSAM
+and EXCP.  BSAM (Basic Sequential Access Method) used to be limited to
+32K blocksize, although now it has been extended.  EXCP (Execute Channel
+Program) is the more flexible of the two, because it is more "lower
+level", and the blocksizes which EXCP can handle, are virtually
+limitless.  The 1976 copy program used BSAM for input (reading the data
+in), and EXCP for output (writing the data out).
+
+      BSAM uses two macros, READ and CHECK to do I/O.  Whereas to use
+EXCP, you have to set up "Channel Programs" which are composed of
+"CCW's" or Channel Command Words.  You program them, and insert them
+into a control block called an IOB (I/O Block).  To run the EXCP engine,
+you EXCP the IOB in your assembler program, and that does the I/O.
+
+      So far, my two programs from years ago, SS0104 and SS0278, can
+only read tapes with a limit of 32K block size.
+
+      I have "spiffed them up" for modern use, because you never know
+when you might need them.  They are included in this file, and we hope
+that you can get good use out of them.
+
+      For other such programs, try COPYMODS on File 229 of the CBT Tape
+collection, or COPYFILE for SL tapes, COPYSLNL to strip SL tapes to make
+NL tapes from them, or even COPYNLNL, to produce weird tapes if you
+have a need for them.  Also TAPEMAP from File 299 is very useful.
+
+      Best of everything to all of you..........
+
+Sincerely,     Sam        sbgolob@cbttape.org
+
+

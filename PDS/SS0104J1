@@ -1,0 +1,18 @@
+//SBGOLOB1  JOB (ACCT#),S-GOLOB,
+// NOTIFY=&SYSUID,
+// CLASS=B,MSGCLASS=X
+//***********************************************************
+//*      SAMPLE JOB TO READ A TAPE WITH SS0104              *
+//***********************************************************
+//*
+//MAPX  PROC  VOL=XXXXXX,DRIVE='563'
+//*ESTA   EXEC PGM=SS0104
+//TESTA   EXEC PGM=MAPTAPE
+//STEPLIB  DD  DSN=SYS1.CBT.LINKLIB,DISP=SHR
+//SYSPRINT DD  SYSOUT=*
+//SYSABEND DD  SYSOUT=*
+//TAPE     DD  UNIT=&DRIVE,VOL=(PRIVATE,RETAIN,,,SER=(&VOL)),
+//             DISP=SHR,LABEL=(1,BLP,EXPDT=98000)
+//  PEND
+//TAPE01  EXEC MAPX,VOL=C506MU
+//*
